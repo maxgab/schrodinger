@@ -10,7 +10,6 @@ def main():
 
     #read from schrodinger.inp
     inp_file = "input/schrodinger.inp"
-
     while os.path.isfile(inp_file) == 0:
         inp_file = input("Cannot find an input file. Please input file location: ")
 
@@ -26,13 +25,13 @@ def main():
     pot_values = list(np.loadtxt(txt[5:]))
 
     #interpolate and discretize potantial
-    pot_values = disc.interpolate(pot_values, inp_data["points"], inp_data["interpolation"])
-    pot_values = disc.discretize(pot_values)
+    pot_values = disc.interp(pot_values, inp_data["interpolation"])
+    pot_values = disc.discretize(pot_values, inp_data["range"][0],
+                                 inp_data["range"][1], inp_data["range"][2])
 
     #solve eigenvalue problem
     eigenvalues = eigenv.eigenval_sgl(pot_values, inp_data["mass"], inp_data["range"][0],
                                       inp_data["range"][1], inp_data["range"][2])
-
     np.savetxt("output/potential.dat", pot_values)
     np.savetxt("output/eigenvalues.dat", eigenvalues[0])
     np.savetxt("output/wavefuncs.dat", eigenvalues[1])

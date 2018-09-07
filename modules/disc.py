@@ -35,9 +35,5 @@ def discretize(pot_values, minval, maxval, disc_points):
     pot_disc.append(np.linspace(minval, maxval, disc_points))
     pot_disc.append(pot_values(pot_disc[0]))
 
-    #import matplotlib.pyplot as plt
-    #plt.plot(pot_disc[0], pot_disc[1])
-    #plt.show()
-
     pot_disc = list(zip(pot_disc[0], pot_disc[1]))
     return pot_disc

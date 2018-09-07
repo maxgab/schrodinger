@@ -8,11 +8,12 @@ import modules.eigenv as eigenv
 def main():
     """Main function, includes top level code"""
 
-    #read from schrodinger.inp
+    #check if schrodinger.inp exists
     inp_file = "input/schrodinger.inp"
     while os.path.isfile(inp_file) == 0:
         inp_file = input("Cannot find an input file. Please input file location: ")
 
+    #read from schrodinger.inp
     with open(inp_file, "r") as fp:
         txt = fp.readlines()
         inp_data = {
@@ -30,8 +31,7 @@ def main():
                                  inp_data["range"][1], inp_data["range"][2])
 
     #solve eigenvalue problem
-    eigenvalues = eigenv.eigenval_sgl(pot_values, inp_data["mass"], inp_data["range"][0],
-                                      inp_data["range"][1], inp_data["range"][2])
+    eigenvalues = eigenv.eigenval_sgl(pot_values, inp_data["mass"], inp_data["eigenvalues"])
     np.savetxt("output/potential.dat", pot_values)
     np.savetxt("output/eigenvalues.dat", eigenvalues[0])
     np.savetxt("output/wavefuncs.dat", eigenvalues[1])

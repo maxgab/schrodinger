@@ -7,7 +7,7 @@ def interp(pot_values, interp_type):
     input:
         pot_values: potential values in x-V(x) pairs (list)
         type: type of interpolation
-    return:
+    output:
         interpolated potential or false if failure
     """
     values = list(zip(*pot_values))

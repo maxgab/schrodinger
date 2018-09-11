@@ -8,12 +8,21 @@ import modules.eigenv as eigenv
 def main():
     """Main function, includes top level code"""
 
-    #read from schrodinger.inp
+    #check if schrodinger.inp exists
     inp_file = "input/schrodinger.inp"
-
     while os.path.isfile(inp_file) == 0:
-        inp_file = input("Cannot find an input file. Please input file location: ")
+        inp_file = input("Cannot find file input/schrodinger.inp. Please input file location: ")
 
+    #check if output files exist
+    outp_dir = "output/"
+    outp_files = ["eigenvalues.dat", "wavefuncs.dat", "potential.dat"]
+    outp_files = [outp_dir + i for i in outp_files]
+    os.makedirs(os.path.dirname(outp_dir), exist_ok=True)
+    for file_name in outp_files:
+        file = open(file_name, "a")
+        file.close()
+
+    #read from schrodinger.inp
     with open(inp_file, "r") as fp:
         txt = fp.readlines()
         inp_data = {
@@ -26,13 +35,12 @@ def main():
     pot_values = list(np.loadtxt(txt[5:]))
 
     #interpolate and discretize potantial
-    pot_values = disc.interpolate(pot_values, inp_data["points"], inp_data["interpolation"])
-    pot_values = disc.discretize(pot_values)
+    pot_values = disc.interp(pot_values, inp_data["interpolation"])
+    pot_values = disc.discretize(pot_values, inp_data["range"][0],
+                                 inp_data["range"][1], inp_data["range"][2])
 
     #solve eigenvalue problem
-    eigenvalues = eigenv.eigenval_sgl(pot_values, inp_data["mass"], inp_data["range"][0],
-                                      inp_data["range"][1], inp_data["range"][2])
-
+    eigenvalues = eigenv.eigenval_sgl(pot_values, inp_data["mass"], inp_data["eigenvalues"])
     np.savetxt("output/potential.dat", pot_values)
     np.savetxt("output/eigenvalues.dat", eigenvalues[0])
     np.savetxt("output/wavefuncs.dat", eigenvalues[1])

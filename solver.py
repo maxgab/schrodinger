@@ -15,7 +15,7 @@ def main():
 
     #check if output files exist
     outp_dir = "output/"
-    outp_files = ["eigenvalues.dat", "wavefuncs.dat", "potential.dat"]
+    outp_files = ["eigenvalues.dat", "wavefuncs.dat", "potential.dat", "expvalues.dat"]
     outp_files = [outp_dir + i for i in outp_files]
     os.makedirs(os.path.dirname(outp_dir), exist_ok=True)
     for file_name in outp_files:
@@ -44,5 +44,16 @@ def main():
     np.savetxt("output/potential.dat", pot_values)
     np.savetxt("output/eigenvalues.dat", eigenvalues[0])
     np.savetxt("output/wavefuncs.dat", eigenvalues[1])
+
+    #additional values
+    expvalues = []
+    funcs = list(zip(*eigenvalues[1]))
+    for item in funcs[1:]:
+        norm = eigenv.normalize([funcs[0], item])
+        expected = eigenv.expected(norm)
+        uncert = eigenv.uncertainity(norm)
+        expvalues.append([expected, uncert])
+
+    np.savetxt("output/expvalues.dat", expvalues)
 
 main()

@@ -19,17 +19,17 @@ A1 = int(((S1["x"])[1])-(S1["x"])[0]) + 1
 
 X1 = np.genfromtxt('output/potential.dat', usecols=(0))
 Y1 = np.genfromtxt('output/potential.dat', usecols=(1))
-X2 = np.zeros(A1)
+X2 = np.genfromtxt('output/expvalues.dat', usecols=(0))
 #creates zeros as x-values for the corresponding eigenvalues
 Y2 = np.genfromtxt('output/eigenvalues.dat', usecols=(0))
-#X3 = np.genfromtxt('erwartungswerte.dat', usecols=(0))
-#Y3 = np.genfromtxt('erwartungswerte.dat', usecols=(1))
+X3 = np.genfromtxt('output/expvalues.dat', usecols=(1))
+Y3 = np.genfromtxt('output/eigenvalues.dat', usecols=(0))
 #Reads and saves the x and y values for potential erwartungswerte und eigenvalues
 
 plt.subplot(121)
 #creates the first subplot
 plt.plot(X1, Y1, color='black', label='Potential')
-plt.scatter(X2, Y2, color='green', linewidth='2.0', marker='x', label='Eigenvalues')
+plt.scatter(X2, Y2, color='green', linewidth='2.0', marker='x', label='Expected values')
 #plots the arrays in to one plot
 
 WF = np.genfromtxt('output/wavefuncs.dat')
@@ -57,19 +57,19 @@ plt.ylabel('Energy[Hardtree]')
 for i in range(0, A1):
     plt.axhline(y = Y2[i], linewidth = 0.1, color = 'black')
 #sdets the title
-plt.title('Potential, Eigenvalues, Wavefunctions')
+plt.title('Potential, Expected values, Wavefunctions')
 
-plt.ylim(ymax=Y2[A1-1]+1) 
+plt.ylim(ymax=Y2[A1-1]+1)
 #schneidet noch unten ab und nicht oben
 #creats a legend
 plt.legend()
 
 
-#plt.subplot(122)
+plt.subplot(122)
 #creates sublot nr2
-#plt.scatter(X3, Y3, color='fuchsia', marker='+')
+plt.scatter(X3, Y3, color='fuchsia', marker='+')
 #plots the array into the second plot
-#plt.title('$\sigma_x$')
+plt.title('$\sigma_x$')
 #creates an title with greeek letters
 
 plt.show()

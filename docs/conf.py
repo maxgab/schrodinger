@@ -19,14 +19,14 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'schrodinger'
+project = 'Schrodinger'
 copyright = '2018, Max Gaber, Jasper Kölling'
 author = 'Max Gaber, Jasper Kölling'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '13.9.18'
 
 
 # -- General configuration ---------------------------------------------------
@@ -42,8 +42,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -106,7 +104,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'schrodingerdoc'
+htmlhelp_basename = 'Schrodingerdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -133,7 +131,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'schrodinger.tex', 'schrodinger Documentation',
+    (master_doc, 'Schrodinger.tex', 'Schrodinger Documentation',
      'Max Gaber, Jasper Kölling', 'manual'),
 ]
 
@@ -143,7 +141,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'schrodinger', 'schrodinger Documentation',
+    (master_doc, 'schrodinger', 'Schrodinger Documentation',
      [author], 1)
 ]
 
@@ -154,10 +152,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'schrodinger', 'schrodinger Documentation',
-     author, 'schrodinger', 'One line description of project.',
+    (master_doc, 'Schrodinger', 'Schrodinger Documentation',
+     author, 'Schrodinger', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-# -- Extension configuration -------------------------------------------------

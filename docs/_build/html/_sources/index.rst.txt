@@ -3,8 +3,128 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to schrodinger's documentation!
-=======================================
+##############
+Schrodinger
+##############
+
+**************
+Overview
+**************
+
+This programme solves the one dimensional time-independent schrodinger equation for a given
+potential numerically. It is designed to interpolate a given potential and retrieve
+the eigenvalues and eigenvectors via discredization and solving the eigenvalue
+problem in matrix form. After solving for the energies, wavefuctions and standard
+deviation the program will display the results in a plot giving the option to
+save the plot.
+
+******************
+Input
+******************
+
+In order for the solver to solve the potential it is necessary to place a file called
+**schrodinger.inp** in the root folder of the programme.
+The input file must have to following format (example):
+
+::
+
+	4.0            # Mass
+	-5.0 5.0 1999  # xMin xMax nPoint
+	1 5            # first and last eigenvalue to include in the output
+	polynomial     # interpolation type
+	3              # # nr. of interpolation points and xy declarations
+	-1.0  0.5
+	0.0  0.0
+	1.0  0.5
+
+The options for the interpolation types are **linear** for linear, **csplines** for cubic csplines
+and **polynomial** for polynomial interpolation.
+Al the other values can be configured to your liking. When choosing the number
+of interpolation points, make sure that those and the number coordinates
+below match.
+
+******
+Output
+******
+
+The programme will save the files **eigenvalues.dat**, **expvalues.dat**, **potential.dat** and
+**wavefuncs.dat** in a folder called *output/*.
+
+The file **eigenvalues.dat** will give the amount of requested eingenvalues and will look like this:
+
+::
+
+	eigenvalue-1
+	eigenvalue-2
+	:
+	:
+	eigenvalue-n
+
+The file **expvalues.dat** will give the expected values and the standard deviation and
+will look like this:
+
+::
+
+	expvalue-1 standarddev-1
+	expvalue-2 standarddev-2
+	:          :
+	expvalue-n standarddev-n
+
+
+The file **potential.dat** will give the interpolated and discretiziced potential with its
+x- and y-values and will look like this:
+
+::
+
+	potential-x1 potential-y1
+	potential-x2 potential-y2
+	:           :
+	potential-xn potential-yn
+
+
+The file **wavefuncs.dat** will give the x- and y-values to the according wave functions.
+This file will look like this:
+
+::
+
+	wavef-x1 wavefunc-1-y1 wavefunc-2-y1 ....   wavefunc-n-y1
+	wavef-x1 wavefunc-1-y2 wavefunc-2-y2 ....   wavefunc-n-y2
+	:       :           :                  :
+	wavef-x1 wavefunc-1-yn wavefunc-2-yn ....   wavefunc-n-yn
+
+The plot of the given files will automatically appear on your screen.
+
+
+********************
+Starting the program
+********************
+
+To start the programme simply create the file *schrodinger.inp*
+and start **index.py**. If this:
+
+::
+
+  Cannot find file schrodinger.inp. Please input file location:
+
+appears in the console please specify the location of the input file.
+
+
+**************
+Modules
+**************
+
+---------
+solver.py
+---------
+.. automodule:: solver
+   :members:
+
+--------------
+visualizer.py
+--------------
+
+.. automodule:: visualizer
+   :members:
 
 .. toctree::
    :maxdepth: 2

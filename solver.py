@@ -5,11 +5,12 @@ import scipy as sp
 from scipy import interpolate
 def interp(pot_values, interp_type):
     """interpolates given potential
+
     Args:
-        pot_values: potential values in x-V(x) pairs (list)
-        type: type of interpolation (string)
+        pot_values (list): potential values in x-V(x) pairs (list)
+        type (string): type of interpolation (string)
     Returns:
-        interpolated potential function
+        list: interpolated potential function
     """
     values = list(zip(*pot_values))
     if interp_type == "linear":
@@ -24,13 +25,14 @@ def interp(pot_values, interp_type):
 
 def discretize(pot_values, minval, maxval, disc_points):
     """discretizes given function
+
     Args:
-        pot_values: potential values function
-        minval: x-min point
-        maxval: x-max point
-        disc_points: number of discretization points
+        pot_values (function): potential values function
+        minval (float): x-min point
+        maxval (float): x-max point
+        disc_points (int): number of discretization points
     Returns:
-        discretized potential (list)
+        list: discretized potential (list)
     """
     pot_disc = []
     pot_disc.append(np.linspace(minval, maxval, disc_points))
@@ -41,12 +43,13 @@ def discretize(pot_values, minval, maxval, disc_points):
 
 def solve_sgl(pot, mass, eigenv_range):
     """solves eigenvalue problem for discretized potential
+
     Args:
-        pot: discretized potential
-        mass: mass of particle
-        range: first and last eigenvalue (list)
+        pot (list): discretized potential
+        mass (float): mass of particle
+        range (list): first and last eigenvalue
     Returns:
-        list of eigenvalues and eigenfunctions [[v, x1, x2, ...] ...]
+        list: eigenvalues and eigenfunctions [[v, x1, x2, ...] ...]
     """
     pot = list(zip(*pot))
     distance = pot[0][1] - pot[0][0]
@@ -60,10 +63,11 @@ def solve_sgl(pot, mass, eigenv_range):
 
 def normalize(vec):
     """normalizes a given wavefunction
+
     Args:
-        wavefunc: wavefunction
+        wavefunc (list): wavefunction
     Returns:
-        normalized wavefunction (list[x][wfx])
+        numpy array: normalized wavefunction [x][wfx]
     """
     vec = np.array(vec)
     dist = abs(vec[0][1] - vec[0][0])
@@ -77,10 +81,11 @@ def normalize(vec):
 
 def expected(func):
     """calculates expected value of operator
+
     Args:
-        observalble list([list(x), list(val)])
+        func (list): observalble list([list(x), list(val)])
     Returns:
-        expected value
+        numpy array: expected value
     """
     func = np.array(func)
     dist = abs(func[0][1] - func[0][0])
@@ -90,10 +95,11 @@ def expected(func):
 
 def uncertainty(func):
     """calculates heisenberg uncertainity of operator
+
     Args:
-        normalized observable function list([list(x), list(val)])
+        func (list): normalized observable function [list(x), list(val)]
     Returns:
-        uncertainity
+        numpy array: uncertainity
     """
     func = np.array(func)
     exp = expected(func)

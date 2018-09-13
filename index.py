@@ -31,7 +31,9 @@ def main():
             "interpolation": str(np.loadtxt(txt[3:4], "str")),
             "points": float(np.loadtxt(txt[4:5]))
         }
-    pot_values = list(np.loadtxt(txt[5:]))
+    #pot_values = list(np.loadtxt(txt[5:]))
+    pot_values = np.loadtxt(txt[5:]).T
+    #pot_values = list(zip(*pot_values))
 
     #interpolate and discretize potantial
     pot_values = sv.interp(pot_values, inp_data["interpolation"])
@@ -39,18 +41,17 @@ def main():
                                inp_data["range"][1], inp_data["range"][2])
 
     #solve eigenvalue problem
-    eigenvalues = sv.solve_sgl(pot_values, inp_data["mass"], inp_data["eigenvalues"])
-    np.savetxt("output/potential.dat", pot_values)
-    np.savetxt("output/eigenvalues.dat", eigenvalues[0])
-    np.savetxt("output/wavefuncs.dat", eigenvalues[1])
+    (eigenvalues, eigenfuncs) = sv.solve_sgl(pot_values, inp_data["mass"], inp_data["eigenvalues"])
+    np.savetxt("output/potential.dat", list(zip(pot_values[0], pot_values[1])))
+    np.savetxt("output/eigenvalues.dat", eigenvalues)
+    np.savetxt("output/wavefuncs.dat", np.c_[pot_values[0], eigenfuncs.T])
 
     #additional values
     expvalues = []
-    funcs = list(zip(*eigenvalues[1]))
-    for item in funcs[1:]:
-        norm = sv.normalize([funcs[0], item])
-        expected = sv.expected(norm)
-        uncert = sv.uncertainty(norm)
+    dist = abs(pot_values[0][1] - pot_values[0][0])
+    for item in eigenfuncs:
+        expected = sv.expected([pot_values[0], item], dist)
+        uncert = sv.uncertainty([pot_values[0], item])
         expvalues.append([expected, uncert])
 
     np.savetxt("output/expvalues.dat", expvalues)

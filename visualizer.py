@@ -2,25 +2,33 @@
 """This visualizer is used to plot the results created by the solver"""
 import matplotlib.pyplot as plt
 import numpy as np
+import custom as ct
 def display():
-    """Main function includes the top level code """
-    s1 = "schrodinger.inp"
+    """displays data from potential.dat, expvalues.dat, eigenvalues.dat"""
+    files = ct.file_input("schrodinger.inp", 'output/potential.dat',
+                          'output/expvalues.dat', 'output/eigenvalues.dat',
+                          'output/wavefuncs.dat')
+    s1 = files[0]
     with open(s1, "r") as fp:
         t1 = fp.readlines()
         s1 = {"x":list(np.loadtxt(t1[2:3]))}
     a1 = int(((s1["x"])[1])-(s1["x"])[0]) + 1
-    px = np.genfromtxt('output/potential.dat', usecols=(0))
-    py = np.genfromtxt('output/potential.dat', usecols=(1))
-    ex = np.genfromtxt('output/expvalues.dat', usecols=(0))
-    ev = np.genfromtxt('output/eigenvalues.dat', usecols=(0))
-    ey = np.genfromtxt('output/expvalues.dat', usecols=(1))
+    px = np.genfromtxt(files[1], usecols=(0))
+    py = np.genfromtxt(files[1], usecols=(1))
+    ex = np.genfromtxt(files[2], usecols=(0))
+    ev = np.genfromtxt(files[3], usecols=(0))
+    ey = np.genfromtxt(files[2], usecols=(1))
     a2 = np.min(py)
-    wf = np.genfromtxt('output/wavefuncs.dat')
+    wf = np.genfromtxt(files[4])
     x4 = wf[:, 0]
     ei = np.max(ev) - np.min(ev)
     yx = ev[a1-1] + ei/4
     yn = a2 - ei/10
-    sf = 1 + (-4/7) * a1 + (40/7)
+    sf = 0.3
+
+    [yx, yn, sf] = ct.set_options(["y max value", yx],
+                                  ["y min value", yn],
+                                  ["scaling", sf])
 
     plt.subplot(121)
     plt.plot(px, py, color='black', label='Potential')
@@ -51,3 +59,6 @@ def display():
     plt.xlabel('x[Bohr]')
     plt.title('$\sigma_x$')
     plt.show()
+
+if __name__ == "__main__":
+    display()

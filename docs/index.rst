@@ -104,9 +104,18 @@ and start **index.py**. If this:
 
 ::
 
-  Cannot find file schrodinger.inp. Please input file location:
+  Cannot find file [file name]. Please input file location:
 
-appears in the console please specify the location of the input file.
+appears in the console please specify the location of the requested file.
+
+To specify further options, just add the parameter *-o* when starting and the programme
+guides you through the settings.
+
+::
+
+  >>>index.py -o
+
+The visualizer.py can be executed also independently if data is available.
 
 
 **************
@@ -126,11 +135,16 @@ visualizer.py
 .. automodule:: visualizer
    :members:
 
+---------------
+custom.py
+---------------
+
+.. automodule:: custom
+   :members:
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-
 
 Indices and tables
 ==================

@@ -50,7 +50,7 @@ The input file must have to following format (example):</p>
 <span class="o">-</span><span class="mf">5.0</span> <span class="mf">5.0</span> <span class="mi">1999</span>  <span class="c1"># xMin xMax nPoint</span>
 <span class="mi">1</span> <span class="mi">5</span>            <span class="c1"># first and last eigenvalue to include in the output</span>
 <span class="n">polynomial</span>     <span class="c1"># interpolation type</span>
-<span class="mi">3</span>              <span class="c1"># # nr. of interpolation points and xy declarations</span>
+<span class="mi">3</span>              <span class="c1"># nr. of interpolation points and xy declarations</span>
 <span class="o">-</span><span class="mf">1.0</span>  <span class="mf">0.5</span>
 <span class="mf">0.0</span>  <span class="mf">0.0</span>
 <span class="mf">1.0</span>  <span class="mf">0.5</span>
@@ -58,8 +58,8 @@ The input file must have to following format (example):</p>
 </div>
 <p>The options for the interpolation types are <strong>linear</strong> for linear, <strong>csplines</strong> for cubic csplines
 and <strong>polynomial</strong> for polynomial interpolation.
-Al the other values can be configured to your liking. When choosing the number
-of interpolation points, make sure that those and the number coordinates
+All the other values can be configured to your liking. When choosing the number
+of interpolation points, make sure that those and the number of coordinates
 below match.</p>
 </div>
 <div class="section" id="output">
@@ -104,10 +104,16 @@ This file will look like this:</p>
 <h2>Starting the program<a class="headerlink" href="#starting-the-program" title="Permalink to this headline">¶</a></h2>
 <p>To start the programme simply create the file <em>schrodinger.inp</em>
 and start <strong>index.py</strong>. If this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cannot</span> <span class="n">find</span> <span class="n">file</span> <span class="n">schrodinger</span><span class="o">.</span><span class="n">inp</span><span class="o">.</span> <span class="n">Please</span> <span class="nb">input</span> <span class="n">file</span> <span class="n">location</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cannot</span> <span class="n">find</span> <span class="n">file</span> <span class="p">[</span><span class="n">file</span> <span class="n">name</span><span class="p">]</span><span class="o">.</span> <span class="n">Please</span> <span class="nb">input</span> <span class="n">file</span> <span class="n">location</span><span class="p">:</span>
 </pre></div>
 </div>
-<p>appears in the console please specify the location of the input file.</p>
+<p>appears in the console please specify the location of the requested file.</p>
+<p>To specify further options, just add the parameter <em>-o</em> when starting and the programme
+guides you through the settings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;index.py -o</span>
+</pre></div>
+</div>
+<p>The visualizer.py can be executed also independently if data is available.</p>
 </div>
 <div class="section" id="modules">
 <h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
@@ -116,21 +122,22 @@ and start <strong>index.py</strong>. If this:</p>
 <p>tools for interpolation and discretization, tools for solving eigenvalue problem</p>
 <dl class="function">
 <dt id="solver.discretize">
-<code class="descclassname">solver.</code><code class="descname">discretize</code><span class="sig-paren">(</span><em>pot_values</em>, <em>minval</em>, <em>maxval</em>, <em>disc_points</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.discretize" title="Permalink to this definition">¶</a></dt>
-<dd><p>discretizes given function</p>
+<code class="descclassname">solver.</code><code class="descname">discretize</code><span class="sig-paren">(</span><em>values</em>, <em>interp_type</em>, <em>minval</em>, <em>maxval</em>, <em>disc_points</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.discretize" title="Permalink to this definition">¶</a></dt>
+<dd><p>interpolates and discretizes given potential</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pot_values</strong> (<em>function</em>) – potential values function</li>
+<li><strong>pot_values</strong> (<em>list</em>) – potential values [[x], [V(x)]]</li>
+<li><strong>type</strong> (<em>string</em>) – type of interpolation</li>
 <li><strong>minval</strong> (<em>float</em>) – x-min point</li>
 <li><strong>maxval</strong> (<em>float</em>) – x-max point</li>
 <li><strong>disc_points</strong> (<em>int</em>) – number of discretization points</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">discretized potential (list)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">discretized potential [[x], [V(x)]]</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
@@ -142,40 +149,22 @@ and start <strong>index.py</strong>. If this:</p>
 
 <dl class="function">
 <dt id="solver.expected">
-<code class="descclassname">solver.</code><code class="descname">expected</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.expected" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">solver.</code><code class="descname">expected</code><span class="sig-paren">(</span><em>func</em>, <em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.expected" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculates expected value of operator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> (<em>list</em>) – observalble list([list(x), list(val)])</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">expected value</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy array</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="solver.interp">
-<code class="descclassname">solver.</code><code class="descname">interp</code><span class="sig-paren">(</span><em>pot_values</em>, <em>interp_type</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.interp" title="Permalink to this definition">¶</a></dt>
-<dd><p>interpolates given potential</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pot_values</strong> (<em>list</em>) – potential values in x-V(x) pairs (list)</li>
-<li><strong>type</strong> (<em>string</em>) – type of interpolation (string)</li>
+<li><strong>func</strong> (<em>list</em>) – vector [[x], [val]]</li>
+<li><strong>dist</strong> (<em>float</em>) – distance between x points</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">interpolated potential function</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">expected value</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
 </td>
 </tr>
 </tbody>
@@ -184,17 +173,23 @@ and start <strong>index.py</strong>. If this:</p>
 
 <dl class="function">
 <dt id="solver.normalize">
-<code class="descclassname">solver.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>normalizes a given wavefunction</p>
+<code class="descclassname">solver.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>vec</em>, <em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>normalizes a given vector</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wavefunc</strong> (<em>list</em>) – wavefunction</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vec</strong> (<em>list</em>) – vector</li>
+<li><strong>dist</strong> (<em>float</em>) – distance between x points</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">normalized wavefunction [x][wfx]</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">normalized wavefunction [x][wfx]</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy array</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -209,13 +204,13 @@ and start <strong>index.py</strong>. If this:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pot</strong> (<em>list</em>) – discretized potential</li>
+<li><strong>pot</strong> (<em>list</em>) – discretized potential [[x], [V(x)]]</li>
 <li><strong>mass</strong> (<em>float</em>) – mass of particle</li>
-<li><strong>range</strong> (<em>list</em>) – first and last eigenvalue</li>
+<li><strong>range</strong> (<em>list</em><em>(</em><em>float</em><em>)</em>) – first and last eigenvalue [min, max]</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">eigenvalues and eigenfunctions [[v, x1, x2, …] …]</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">eigenvalues and eigenfunctions [[eigenv], [[x1-wf1, x1-wf2, …], …]]</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
@@ -228,12 +223,12 @@ and start <strong>index.py</strong>. If this:</p>
 <dl class="function">
 <dt id="solver.uncertainty">
 <code class="descclassname">solver.</code><code class="descname">uncertainty</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.uncertainty" title="Permalink to this definition">¶</a></dt>
-<dd><p>calculates heisenberg uncertainity of operator</p>
+<dd><p>calculates heisenberg uncertainty</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> (<em>list</em>) – normalized observable function [list(x), list(val)]</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> (<em>list</em>) – normalized observable function [[x], [val])]</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">uncertainity</td>
 </tr>
@@ -250,7 +245,47 @@ and start <strong>index.py</strong>. If this:</p>
 <dl class="function">
 <dt id="visualizer.display">
 <code class="descclassname">visualizer.</code><code class="descname">display</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#visualizer.display" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function includes the top level code</p>
+<dd><p>displays data from potential.dat, expvalues.dat, eigenvalues.dat</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-custom">
+<span id="custom-py"></span><h3>custom.py<a class="headerlink" href="#module-custom" title="Permalink to this headline">¶</a></h3>
+<p>loads custom parameters</p>
+<dl class="function">
+<dt id="custom.file_input">
+<code class="descclassname">custom.</code><code class="descname">file_input</code><span class="sig-paren">(</span><em>*files</em><span class="sig-paren">)</span><a class="headerlink" href="#custom.file_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks for input files</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>files</strong> (<em>str</em>) – input files</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">input files</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="custom.set_options">
+<code class="descclassname">custom.</code><code class="descname">set_options</code><span class="sig-paren">(</span><em>*params</em><span class="sig-paren">)</span><a class="headerlink" href="#custom.set_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>set custom options if -o called for float</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>params</strong> (<em>list</em>) – parameters and default values [description, default_parameter]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">retrieved parameters</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="toctree-wrapper compound">
@@ -282,7 +317,8 @@ and start <strong>index.py</strong>. If this:</p>
 <li><a class="reference internal" href="#starting-the-program">Starting the program</a></li>
 <li><a class="reference internal" href="#modules">Modules</a><ul>
 <li><a class="reference internal" href="#module-solver">solver.py</a></li>
-<li><a class="reference internal" href="#module-visualizer">visualizer.py</a><ul>
+<li><a class="reference internal" href="#module-visualizer">visualizer.py</a></li>
+<li><a class="reference internal" href="#module-custom">custom.py</a><ul>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>

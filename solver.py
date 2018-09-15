@@ -3,37 +3,28 @@
 import numpy as np
 import scipy as sp
 from scipy import interpolate
-def interp(values, interp_type):
-    """interpolates given potential
+def discretize(values, interp_type, minval, maxval, disc_points):
+    """interpolates and discretizes given potential
 
     Args:
         pot_values (list): potential values [[x], [V(x)]]
-        type (string): type of interpolation (string)
-    Returns:
-        function: interpolated potential function
-    """
-
-    if interp_type == "linear":
-        pot_interp = interpolate.interp1d(values[0], values[1], "linear")
-    elif interp_type == "cspline":
-        pot_interp = interpolate.CubicSpline(values[0], values[1])
-    elif interp_type == "polynomial":
-        pot_interp = interpolate.BarycentricInterpolator(values[0], values[1])
-    else:
-        pot_interp = 0
-    return pot_interp
-
-def discretize(pot_values, minval, maxval, disc_points):
-    """discretizes given function
-
-    Args:
-        pot_values (function): potential values function
+        type (string): type of interpolation
         minval (float): x-min point
         maxval (float): x-max point
         disc_points (int): number of discretization points
     Returns:
         list: discretized potential [[x], [V(x)]]
     """
+
+    if interp_type == "linear":
+        pot_values = interpolate.interp1d(values[0], values[1], "linear")
+    elif interp_type == "cspline":
+        pot_values = interpolate.CubicSpline(values[0], values[1])
+    elif interp_type == "polynomial":
+        pot_values = interpolate.BarycentricInterpolator(values[0], values[1])
+    else:
+        pot_values = 0
+
     pot_disc = []
     pot_disc.append(np.linspace(minval, maxval, disc_points))
     pot_disc.append(pot_values(pot_disc[0]))
@@ -46,7 +37,7 @@ def solve_sgl(pot, mass, eigenv_range):
     Args:
         pot (list): discretized potential [[x], [V(x)]]
         mass (float): mass of particle
-        range (list): first and last eigenvalue [min, max]
+        range (list(float)): first and last eigenvalue [min, max]
     Returns:
         list: eigenvalues and eigenfunctions [[eigenv], [[x1-wf1, x1-wf2, ...], ...]]
     """
@@ -64,10 +55,10 @@ def solve_sgl(pot, mass, eigenv_range):
     return [eigenval, eigenfunc]
 
 def normalize(vec, dist):
-    """normalizes a given wavefunction
+    """normalizes a given vector
 
     Args:
-        wavefunc (list): wavefunction
+        vec (list): vector
         dist (float): distance between x points
     Returns:
         numpy array: normalized wavefunction [x][wfx]
@@ -85,7 +76,8 @@ def expected(func, dist):
     """calculates expected value of operator
 
     Args:
-        func (list): observalble list([list(x), list(val)])
+        func (list): vector [[x], [val]]
+        dist (float): distance between x points
     Returns:
         numpy array: expected value
     """
@@ -95,10 +87,10 @@ def expected(func, dist):
     return exp_sum*dist
 
 def uncertainty(func):
-    """calculates heisenberg uncertainty of operator
+    """calculates heisenberg uncertainty
 
     Args:
-        func (list): normalized observable function [list(x), list(val)]
+        func (list): normalized observable function [[x], [val])]
     Returns:
         numpy array: uncertainity
     """

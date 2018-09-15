@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-"""solves the schrodinger equation for given parameters in /input/schrodinger.inp"""
+"""solves the schrodinger equation for given parameters"""
 import os
 import numpy as np
 import solver as sv
 import visualizer as vz
+import custom as ct
 
 def main():
     """Main function, includes top level code"""
 
     #check if schrodinger.inp exists
-    inp_file = "schrodinger.inp"
-    while os.path.isfile(inp_file) == 0:
-        inp_file = input("Cannot find file schrodinger.inp. Please input file location: ")
+    inp_file = ct.file_input("schrodinger.inp")
 
     #check if output files exist
     outp_files = ["eigenvalues.dat", "wavefuncs.dat", "potential.dat", "expvalues.dat"]
@@ -36,8 +35,7 @@ def main():
     #pot_values = list(zip(*pot_values))
 
     #interpolate and discretize potantial
-    pot_values = sv.interp(pot_values, inp_data["interpolation"])
-    pot_values = sv.discretize(pot_values, inp_data["range"][0],
+    pot_values = sv.discretize(pot_values, inp_data["interpolation"], inp_data["range"][0],
                                inp_data["range"][1], inp_data["range"][2])
 
     #solve eigenvalue problem
@@ -57,5 +55,7 @@ def main():
     np.savetxt("output/expvalues.dat", expvalues)
 
     vz.display()
+
+
 
 main()

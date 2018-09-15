@@ -27,8 +27,8 @@ def set_options(*params):
     Returns:
         list: retrieved parameters"""
     params = np.array(params)
-    if len(sys.argv) == 2:
-        if sys.argv[1] == "-o":
+    if len(sys.argv) >= 2:
+        if "-o" in sys.argv:
             for index, item in enumerate(params):
                 custom_inp = input(str(item[0]) + " [default: " + item[1] + "]: ")
                 if custom_inp != "":

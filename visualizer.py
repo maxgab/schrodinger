@@ -25,10 +25,14 @@ def display(inp_file):
     yx = ev[a1-1] + ei/4
     yn = a2 - ei/10
     sf = 0.3
+    xn = px[0]
+    xx = px[-1]
 
-    [yx, yn, sf] = ct.set_options(["y max value", yx],
-                                  ["y min value", yn],
-                                  ["scaling", sf])
+    [yx, yn, xx, xn, sf] = ct.set_options(["y max value", yx],
+                                          ["y min value", yn],
+                                          ["x max value", xx],
+                                          ["x min value", xn],
+                                          ["y-scaling", sf])
 
     plt.subplot(121)
     plt.plot(px, py, color='black', label='Potential')
@@ -48,6 +52,7 @@ def display(inp_file):
     plt.title('Potential, Expected values, Wavefunctions')
     plt.ylim(ymax=yx)
     plt.ylim(ymin=yn)
+    plt.xlim(xn, xx)
     plt.legend()
     plt.subplot(122)
     plt.scatter(ey, ev, color='fuchsia', marker='+')

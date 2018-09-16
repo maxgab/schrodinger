@@ -56,5 +56,5 @@ def main(inp_file):
     return inp_file
 
 if __name__ == "__main__":
-    inp_file = main("schrodinger.inp")
-    vz.display(inp_file)
+    INP_FILE = main("schrodinger.inp")
+    vz.display(INP_FILE)

@@ -54,5 +54,6 @@ def main():
 
     np.savetxt("output/expvalues.dat", expvalues)
 
-main()
-vz.display()
+if __name__ == "__main__":
+    main()
+    vz.display()

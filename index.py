@@ -6,11 +6,11 @@ import solver as sv
 import visualizer as vz
 import custom as ct
 
-def main():
+def main(inp_file):
     """Main function, includes top level code"""
 
     #check if schrodinger.inp exists
-    inp_file = ct.file_input("schrodinger.inp")
+    inp_file = ct.file_input(inp_file)
 
     #check if output files exist
     outp_files = ["eigenvalues.dat", "wavefuncs.dat", "potential.dat", "expvalues.dat"]
@@ -55,5 +55,5 @@ def main():
     np.savetxt("output/expvalues.dat", expvalues)
 
 if __name__ == "__main__":
-    main()
+    main("schrodinger.inp")
     vz.display()

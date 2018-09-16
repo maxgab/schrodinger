@@ -3,9 +3,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import custom as ct
-def display():
+def display(inp_file):
     """displays data from potential.dat, expvalues.dat, eigenvalues.dat"""
-    files = ct.file_input("schrodinger.inp", 'output/potential.dat',
+    files = ct.file_input(inp_file, 'output/potential.dat',
                           'output/expvalues.dat', 'output/eigenvalues.dat',
                           'output/wavefuncs.dat')
     s1 = files[0]
@@ -61,4 +61,4 @@ def display():
     plt.show()
 
 if __name__ == "__main__":
-    display()
+    display("schrodinger.inp")

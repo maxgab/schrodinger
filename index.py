@@ -53,7 +53,8 @@ def main(inp_file):
         expvalues.append([expected, uncert])
 
     np.savetxt("output/expvalues.dat", expvalues)
+    return inp_file
 
 if __name__ == "__main__":
-    main("schrodinger.inp")
-    vz.display()
+    inp_file = main("schrodinger.inp")
+    vz.display(inp_file)

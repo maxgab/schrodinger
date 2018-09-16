@@ -14,6 +14,7 @@ def file_input(*files):
     for item in files:
         while os.path.isfile(item) == 0:
             item = input("Cannot find file " + item + ". Please input file location: ")
+            item = "./" + item
         return_files.append(item)
     if len(return_files) == 1:
         return_files = str(return_files[0])
